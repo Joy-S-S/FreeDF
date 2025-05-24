@@ -3,15 +3,15 @@ html {
 }
 
 :root {
---primary-color: #3db39e;      /* تركواز هادي ومنعش */
---secondary-color: #2c3e50;    /* أزرق داكن معتدل */
---accent-color: #95a5a6;       /* رمادي مائل للأخضر فاتح */
---light-color: #ecf0f1;        /* رمادي فاتح جداً */
---dark-color: #34495e;         /* أزرق رمادي غامق */
---text-color: #2c3e50;         /* نص داكن مريح */
---text-dark: #1c2833;          /* نص أغمق للقراءة */
---shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
---transition: all 0.3s ease;
+ --primary-color: #3db39e;      /* تركواز منعش، مناسب للزرار وللأكشن */
+    --secondary-color: #2c3e50;    /* أزرق غامق مريح للخلفيات الكبيرة */
+    --accent-color: #95a5a6;       /* رمادي مخضر فاتح، مناسب للفواصل والحدود */
+    --light-color: #ecf0f1;        /* أبيض رمادي ناعم للخلفيات الفاتحة */
+    --dark-color: #34495e;         /* أزرق رمادي غامق للعناصر الداكنة */
+    --text-color: #f0f3f4;         /* أبيض ناعم للنصوص على الخلفيات الداكنة */
+    --text-dark: #2c3e50;          /* نص غامق للعناصر الفاتحة */
+    --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --transition: all 0.3s ease;
 }
 
 * {
