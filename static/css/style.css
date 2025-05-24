@@ -3,15 +3,15 @@ html {
 }
 
 :root {
-    --primary-color: #dc143c; /* Crimson red */
-    --secondary-color: #1a1a1a; /* Dark black */
-    --accent-color: #333333;
-    --light-color: #f8f8f8;
-    --dark-color: #222222;
-    --text-color: #e0e0e0;
-    --text-dark: #333;
-    --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    --transition: all 0.3s ease;
+    --primary-color: #7a9e9f;    /* لون أزرق-رمادي هادئ */
+--secondary-color: #b0bec5;  /* رمادي فاتح مائل للأزرق */
+--accent-color: #90a4ae;     /* رمادي متوسط ناعم */
+--light-color: #f5f7fa;      /* أبيض كريمي ناعم */
+--dark-color: #455a64;       /* رمادي أزرق داكن لكن ليس شديد */
+--text-color: #37474f;       /* رمادي غامق لكن مريح */
+--text-dark: #263238;        /* رمادي أزرق أقرب للداكن لكن ليس أسود */
+--shadow: 0 4px 6px rgba(0, 0, 0, 0.08);
+--transition: all 0.3s ease;
 }
 
 * {
