@@ -858,3 +858,125 @@ body {
 .drag-handle:hover {
     opacity: 1;
 }
+/* Images to PDF Styles */
+.sortable-images {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 20px;
+    width: 100%;
+    overflow-x: auto;
+    padding-bottom: 10px;
+}
+
+.image-thumbnail {
+    position: relative;
+    width: 150px;
+    height: 200px;
+    border-radius: 4px;
+    overflow: hidden;
+    background-color: var(--dark-color);
+    border: 1px solid var(--accent-color);
+    cursor: move;
+    transition: transform 0.2s ease;
+    flex-shrink: 0;
+}
+
+.image-thumbnail:hover {
+    transform: scale(1.05);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.image-thumbnail img {
+    width: 100%;
+    height: calc(100% - 30px);
+    object-fit: contain;
+    background-color: white;
+}
+
+.image-info {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 5px;
+    font-size: 0.8rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: center;
+}
+
+.image-remove {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background-color: rgba(255, 0, 0, 0.7);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    padding: 0;
+    font-size: 0.7rem;
+}
+
+.image-remove:hover {
+    background-color: rgba(255, 0, 0, 0.9);
+}
+
+.pdf-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.pdf-options .option {
+    flex: 1;
+    min-width: 200px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding: 10px;
+    background-color: var(--accent-color);
+    border-radius: 4px;
+}
+
+.pdf-options select {
+    padding: 8px 12px;
+    border-radius: 4px;
+    border: 1px solid var(--accent-color);
+    background-color: var(--dark-color);
+    color: var(--text-color);
+    width: 100%;
+}
+
+/* Responsive adjustments for images */
+@media (max-width: 768px) {
+    .image-thumbnail {
+        width: 120px;
+        height: 160px;
+    }
+}
+
+@media (max-width: 480px) {
+    .image-thumbnail {
+        width: 100px;
+        height: 140px;
+    }
+    
+    .image-info {
+        font-size: 0.7rem;
+    }
+    
+    .pdf-options .option {
+        min-width: 100%;
+    }
+}
