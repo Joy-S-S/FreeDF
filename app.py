@@ -5,6 +5,7 @@ from flask import Flask, render_template, request, send_file, jsonify, send_from
 from werkzeug.utils import secure_filename
 import fitz  # PyMuPDF
 import sys
+from io import BytesIO
 
 app = Flask(__name__, static_folder='static')
 app.config['UPLOAD_FOLDER'] = 'uploads'
