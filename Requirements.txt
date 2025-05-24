@@ -1,0 +1,6 @@
+Flask
+python-dotenv
+PyMuPDF
+cloudinary
+requests
+werkzeug
