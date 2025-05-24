@@ -133,73 +133,37 @@ document.addEventListener('DOMContentLoaded', function () {
         const previewArea = document.getElementById(previewId);
         if (!previewArea) return;
 
-        previewArea.innerHTML = '<div class="loading-files"><i class="fas fa-spinner fa-spin"></i> Loading files...</div>';
+        // Special handling for images preview
+        if (previewId === 'images-preview') {
+            previewArea.innerHTML = '<div class="loading-files"><i class="fas fa-spinner fa-spin"></i> Loading images...</div>';
 
-        try {
-            // معالجة جميع الملفات بشكل متوازي
-            const filesWithPageCount = await Promise.all(
-                Array.from(files).map(async file => {
-                    try {
-                        const pageCount = await getPdfPageCount(file);
-                        return { file, pageCount };
-                    } catch (error) {
-                        console.error('Error getting page count:', error);
-                        return { file, pageCount: null };
-                    }
-                })
-            );
+            try {
+                const sortableContainer = document.getElementById('sortable-images');
+                sortableContainer.innerHTML = '';
 
-            previewArea.innerHTML = '';
+                for (let i = 0; i < files.length; i++) {
+                    const file = files[i];
+                    if (!file.type.startsWith('image/')) continue;
 
-            if (filesWithPageCount.length === 1) {
-                const { file, pageCount } = filesWithPageCount[0];
-                const fileItem = createFileItem(file, pageCount);
-                previewArea.appendChild(fileItem);
+                    const imgContainer = document.createElement('div');
+                    imgContainer.className = 'image-thumbnail';
+                    imgContainer.setAttribute('data-file-name', file.name);
+                    imgContainer.setAttribute('data-file-index', i);
 
-                // إضافة حدث إزالة الملف
-                fileItem.querySelector('.file-remove').addEventListener('click', () => {
-                    e.target.value = '';
-                    previewArea.innerHTML = '';
+                    const img = document.createElement('img');
+                    img.src = URL.createObjectURL(file);
+                    img.onload = () => URL.revokeObjectURL(img.src);
 
-                    // لو الأداة هي "Arrange" احذف الكروت من sortable-pages
-                    if (previewId === 'arrange-preview') {
-                        const sortablePages = document.getElementById('sortable-pages');
-                        if (sortablePages) {
-                            sortablePages.innerHTML = '';
-                        }
-                    }
-                });
+                    const imgInfo = document.createElement('div');
+                    imgInfo.className = 'image-info';
+                    imgInfo.textContent = file.name;
 
-
-                // تحديث placeholder في أداة التقسيم
-                if (previewId === 'split-preview' && pageCount) {
-                    document.getElementById('split-pages').placeholder = `e.g. 1-${pageCount}, 5, 7-9`;
-                }
-            } else {
-                const filesContainer = document.createElement('div');
-                filesContainer.className = 'sortable-files';
-                previewArea.appendChild(filesContainer);
-
-                filesWithPageCount.forEach(({ file, pageCount }) => {
-                    const fileItem = createFileItem(file, pageCount);
-                    filesContainer.appendChild(fileItem);
-                });
-
-                // جعل الملفات قابلة للترتيب
-                new Sortable(filesContainer, {
-                    animation: 150,
-                    handle: '.drag-handle',
-                    ghostClass: 'sortable-ghost',
-                    onEnd: function () {
-                        updateFileInputOrder(e.target, filesContainer);
-                    }
-                });
-
-                // إضافة أحداث إزالة الملفات
-                previewArea.querySelectorAll('.file-remove').forEach((btn, index) => {
-                    btn.addEventListener('click', function () {
+                    const removeBtn = document.createElement('button');
+                    removeBtn.className = 'image-remove';
+                    removeBtn.innerHTML = '<i class="fas fa-times"></i>';
+                    removeBtn.addEventListener('click', () => {
                         const newFiles = Array.from(e.target.files);
-                        newFiles.splice(index, 1);
+                        newFiles.splice(i, 1);
 
                         const dataTransfer = new DataTransfer();
                         newFiles.forEach(file => dataTransfer.items.add(file));
@@ -207,17 +171,243 @@ document.addEventListener('DOMContentLoaded', function () {
 
                         handleFiles({ target: e.target }, previewId);
                     });
+
+                    imgContainer.appendChild(img);
+                    imgContainer.appendChild(imgInfo);
+                    imgContainer.appendChild(removeBtn);
+                    sortableContainer.appendChild(imgContainer);
+                }
+
+                // Initialize Sortable for images
+                new Sortable(sortableContainer, {
+                    animation: 150,
+                    ghostClass: 'sortable-ghost',
+                    onEnd: function () {
+                        updateFileInputOrderImages(e.target, sortableContainer);
+                    }
                 });
+
+                previewArea.innerHTML = `<p>${files.length} image(s) loaded. Drag to reorder.</p>`;
+
+            } catch (error) {
+                console.error('Error loading images:', error);
+                previewArea.innerHTML = '<div class="error-message">Error loading images. Please try again.</div>';
             }
+        } else {
+            // Original PDF handling code remains the same
+            previewArea.innerHTML = '<div class="loading-files"><i class="fas fa-spinner fa-spin"></i> Loading files...</div>';
+
+            try {
+                const filesWithPageCount = await Promise.all(
+                    Array.from(files).map(async file => {
+                        try {
+                            const pageCount = await getPdfPageCount(file);
+                            return { file, pageCount };
+                        } catch (error) {
+                            console.error('Error getting page count:', error);
+                            return { file, pageCount: null };
+                        }
+                    })
+                );
+
+                previewArea.innerHTML = '';
+
+                if (filesWithPageCount.length === 1) {
+                    const { file, pageCount } = filesWithPageCount[0];
+                    const fileItem = createFileItem(file, pageCount);
+                    previewArea.appendChild(fileItem);
+
+                    fileItem.querySelector('.file-remove').addEventListener('click', () => {
+                        e.target.value = '';
+                        previewArea.innerHTML = '';
+
+                        if (previewId === 'arrange-preview') {
+                            const sortablePages = document.getElementById('sortable-pages');
+                            if (sortablePages) {
+                                sortablePages.innerHTML = '';
+                            }
+                        }
+                    });
+
+                    if (previewId === 'split-preview' && pageCount) {
+                        document.getElementById('split-pages').placeholder = `e.g. 1-${pageCount}, 5, 7-9`;
+                    }
+                } else {
+                    const filesContainer = document.createElement('div');
+                    filesContainer.className = 'sortable-files';
+                    previewArea.appendChild(filesContainer);
+
+                    filesWithPageCount.forEach(({ file, pageCount }) => {
+                        const fileItem = createFileItem(file, pageCount);
+                        filesContainer.appendChild(fileItem);
+                    });
+
+                    new Sortable(filesContainer, {
+                        animation: 150,
+                        handle: '.drag-handle',
+                        ghostClass: 'sortable-ghost',
+                        onEnd: function () {
+                            updateFileInputOrder(e.target, filesContainer);
+                        }
+                    });
+
+                    previewArea.querySelectorAll('.file-remove').forEach((btn, index) => {
+                        btn.addEventListener('click', function () {
+                            const newFiles = Array.from(e.target.files);
+                            newFiles.splice(index, 1);
+
+                            const dataTransfer = new DataTransfer();
+                            newFiles.forEach(file => dataTransfer.items.add(file));
+                            e.target.files = dataTransfer.files;
+
+                            handleFiles({ target: e.target }, previewId);
+                        });
+                    });
+                }
+            } catch (error) {
+                console.error('Error processing files:', error);
+                previewArea.innerHTML = '<div class="error-message">Error loading files. Please try again.</div>';
+            }
+        }
+    }
+
+    document.getElementById('images-btn').addEventListener('click', handleImagesToPdf);
+
+    async function handleImagesToPdf() {
+        const fileInput = document.getElementById('images-files');
+        const files = fileInput.files;
+        if (!files || files.length === 0) {
+            alert('Please select at least one image file.');
+            return;
+        }
+
+        showProcessing(true);
+
+        try {
+            const { PDFDocument, rgb } = PDFLib;
+            const pdfDoc = await PDFDocument.create();
+
+            // Get page size options
+            const pageSize = document.getElementById('pdf-page-size').value;
+            const margin = parseFloat(document.getElementById('pdf-margin').value) || 0;
+            const fitOption = document.getElementById('pdf-fit').value;
+
+            let pageWidth, pageHeight;
+
+            switch (pageSize) {
+                case 'A4':
+                    pageWidth = 595.28; // 210mm in points (1mm = 2.83465 points)
+                    pageHeight = 841.89; // 297mm
+                    break;
+                case 'Letter':
+                    pageWidth = 612; // 216mm
+                    pageHeight = 792; // 279mm
+                    break;
+                case 'A5':
+                    pageWidth = 420.94; // 148mm
+                    pageHeight = 595.28; // 210mm
+                    break;
+                case 'A3':
+                    pageWidth = 841.89; // 297mm
+                    pageHeight = 1190.55; // 420mm
+                    break;
+                case 'Custom':
+                    const customWidth = parseFloat(document.getElementById('pdf-custom-width').value) || 210;
+                    const customHeight = parseFloat(document.getElementById('pdf-custom-height').value) || 297;
+                    pageWidth = customWidth * 2.83465;
+                    pageHeight = customHeight * 2.83465;
+                    break;
+                default:
+                    pageWidth = 595.28;
+                    pageHeight = 841.89;
+            }
+
+            const marginPoints = margin * 2.83465;
+            const contentWidth = pageWidth - (marginPoints * 2);
+            const contentHeight = pageHeight - (marginPoints * 2);
+
+            // Process images in order
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+
+                // Create a new page for each image
+                const page = pdfDoc.addPage([pageWidth, pageHeight]);
+
+                // Draw image on the page
+                try {
+                    const imageBytes = await file.arrayBuffer();
+                    let image;
+
+                    // Check image type
+                    if (file.type === 'image/jpeg' || file.type === 'image/jpg') {
+                        image = await pdfDoc.embedJpg(imageBytes);
+                    } else if (file.type === 'image/png') {
+                        image = await pdfDoc.embedPng(imageBytes);
+                    } else {
+                        // Try to embed as JPEG by default
+                        try {
+                            image = await pdfDoc.embedJpg(imageBytes);
+                        } catch (e) {
+                            image = await pdfDoc.embedPng(imageBytes);
+                        }
+                    }
+
+                    // Calculate dimensions based on fit option
+                    let width, height;
+
+                    if (fitOption === 'original') {
+                        width = image.width;
+                        height = image.height;
+                    } else if (fitOption === 'fit') {
+                        const ratio = Math.min(
+                            contentWidth / image.width,
+                            contentHeight / image.height
+                        );
+                        width = image.width * ratio;
+                        height = image.height * ratio;
+                    } else { // fill
+                        width = contentWidth;
+                        height = contentHeight;
+                    }
+
+                    // Center the image on the page
+                    const x = marginPoints + (contentWidth - width) / 2;
+                    const y = marginPoints + (contentHeight - height) / 2;
+
+                    page.drawImage(image, {
+                        x,
+                        y,
+                        width,
+                        height,
+                    });
+
+                } catch (error) {
+                    console.error(`Error processing image ${file.name}:`, error);
+                    // If image fails to embed, add a blank page with error message
+                    page.drawText(`Error loading image: ${file.name}`, {
+                        x: 50,
+                        y: pageHeight - 50,
+                        size: 12,
+                        color: rgb(1, 0, 0),
+                    });
+                }
+            }
+
+            const pdfBytes = await pdfDoc.save();
+            const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+            const url = URL.createObjectURL(blob);
+
+            openModal(url, 'Your PDF created from images is ready to download!', 'images.pdf');
         } catch (error) {
-            console.error('Error processing files:', error);
-            previewArea.innerHTML = '<div class="error-message">Error loading files. Please try again.</div>';
+            alert(`Error: ${error.message}`);
+        } finally {
+            showProcessing(false);
         }
     }
 
     // Update file input order after drag and drop
-    function updateFileInputOrder(fileInput, filesContainer) {
-        const fileNames = Array.from(filesContainer.querySelectorAll('.file-item'))
+    function updateFileInputOrderImages(fileInput, filesContainer) {
+        const fileNames = Array.from(filesContainer.querySelectorAll('.image-thumbnail'))
             .map(item => item.dataset.fileName);
 
         const files = Array.from(fileInput.files);
@@ -232,6 +422,22 @@ document.addEventListener('DOMContentLoaded', function () {
         newFiles.forEach(file => dataTransfer.items.add(file));
         fileInput.files = dataTransfer.files;
     }
+    function updateFileInputOrder(fileInput, filesContainer) {
+    const fileNames = Array.from(filesContainer.querySelectorAll('.file-item'))
+        .map(item => item.dataset.fileName);
+
+    const files = Array.from(fileInput.files);
+    const newFiles = [];
+
+    fileNames.forEach(name => {
+        const file = files.find(f => f.name === name);
+        if (file) newFiles.push(file);
+    });
+
+    const dataTransfer = new DataTransfer();
+    newFiles.forEach(file => dataTransfer.items.add(file));
+    fileInput.files = dataTransfer.files;
+}
 
     pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.worker.min.js';
 
@@ -548,6 +754,18 @@ document.addEventListener('DOMContentLoaded', function () {
             showProcessing(false);
         }
     }
+
+    setupFileUpload('images-files', 'images-upload-area', 'images-preview', true);
+
+    // Page size change handler
+    document.getElementById('pdf-page-size').addEventListener('change', function () {
+        const customSizeOption = document.getElementById('custom-size-option');
+        if (this.value === 'Custom') {
+            customSizeOption.style.display = 'flex';
+        } else {
+            customSizeOption.style.display = 'none';
+        }
+    });
 
     // Arrange pages handler
     async function handleArrange() {
