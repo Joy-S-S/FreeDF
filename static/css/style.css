@@ -3,13 +3,13 @@ html {
 }
 
 :root {
-    --primary-color: #ff6b6b;  /* أحمر مرجاني فاتح */
---secondary-color: #2d3436; /* أسود مزرق داكن */
---accent-color: #57606f;    /* رمادي مزرق */
---light-color: #f5f6fa;     /* أبيض مائل للرمادي فاتح جدًا */
---dark-color: #2f3542;      /* أزرق داكن */
---text-color: #f1f2f6;      /* أبيض مائل للرمادي */
---text-dark: #57606f;       /* رمادي مزرق */
+--primary-color: #ff6b6b;       /* Coral Red (يظل كما هو) */
+--secondary-color: #1e272e;    /* Dark Blue-Black (أسود مزرق داكن) */
+--accent-color: #485460;       /* Soft Blue-Gray (رمادي مزرق ناعم) */
+--light-color: #f5f6fa;        /* Off-White (أبيض نقي) */
+--dark-color: #0a3d62;         /* Deep Ocean Blue (أزرق غامق أنيق) */
+--text-color: #f1f2f6;         /* Light Gray-White (نص فاتح) */
+--text-dark: #57606f;          /* Muted Blue-Gray (رمادي داكن) */
 --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 --transition: all 0.3s ease;
 }
