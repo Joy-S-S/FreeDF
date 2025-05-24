@@ -30,6 +30,7 @@
                     <li><a href="#split" class="nav-link">Split</a></li>
                     <li><a href="#remove" class="nav-link">Remove Pages</a></li>
                     <li><a href="#arrange" class="nav-link">Arrange</a></li>
+                    <li><a href="#images" class="nav-link">Images to PDF</a></li>
                 </ul>
             </nav>
             <div class="mobile-menu-btn">
@@ -132,6 +133,54 @@
             </div>
         </section>
 
+        <section id="images" class="tool-section">
+            <div class="container">
+                <h2><i class="fas fa-images"></i> Images to PDF</h2>
+                <div class="tool-container">
+                    <div class="upload-area" id="images-upload-area">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <p>Drag & drop image files here or click to browse</p>
+                        <input type="file" id="images-files" multiple accept="image/*" class="file-input">
+                    </div>
+                    <div class="preview-area" id="images-preview"></div>
+                    <div class="sortable-images" id="sortable-images">
+                        <!-- Images will be added here dynamically -->
+                    </div>
+                    <div class="pdf-options">
+                        <div class="option">
+                            <label for="pdf-page-size">Page Size:</label>
+                            <select id="pdf-page-size">
+                                <option value="A4">A4 (210 × 297 mm)</option>
+                                <option value="Letter">Letter (216 × 279 mm)</option>
+                                <option value="A5">A5 (148 × 210 mm)</option>
+                                <option value="A3">A3 (297 × 420 mm)</option>
+                                <option value="Custom">Custom</option>
+                            </select>
+                        </div>
+                        <div class="option" id="custom-size-option" style="display: none;">
+                            <label for="pdf-custom-width">Width (mm):</label>
+                            <input type="number" id="pdf-custom-width" min="50" max="1000" value="210">
+                            <label for="pdf-custom-height">Height (mm):</label>
+                            <input type="number" id="pdf-custom-height" min="50" max="1000" value="297">
+                        </div>
+                        <div class="option">
+                            <label for="pdf-margin">Margin (mm):</label>
+                            <input type="number" id="pdf-margin" min="0" max="50" value="10">
+                        </div>
+                        <div class="option">
+                            <label for="pdf-fit">Fit Image:</label>
+                            <select id="pdf-fit">
+                                <option value="fill">Fill Page</option>
+                                <option value="fit" selected>Fit to Page</option>
+                                <option value="original">Original Size</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" id="images-btn">Create PDF</button>
+                </div>
+            </div>
+        </section>
+
         <section id="features" class="features-section">
             <div class="container">
                 <h2>Why Choose FreeDF?</h2>
@@ -175,6 +224,7 @@
                         <li><a href="#split">Split PDF</a></li>
                         <li><a href="#remove">Remove Pages</a></li>
                         <li><a href="#arrange">Arrange</a></li>
+                        <li><a href="#images">Images to PDF</a></li>
                     </ul>
                 </div>
                 <div class="footer-section">
