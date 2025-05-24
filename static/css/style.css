@@ -3,13 +3,13 @@ html {
 }
 
 :root {
---primary-color: #9b59b6;
-    --secondary-color: #2e2f33;  /* تم التعديل هنا */
-    --accent-color: #8e44ad;
-    --light-color: #e8daef;
-    --dark-color: #121820;
-    --text-color: #f4eafa;
-    --text-dark: #b8b8c6;
+--primary-color: #9b59b6;        /* نفس البنفسجي الجميل – مناسب كأيقونات أو أزرار */
+    --secondary-color: #1e1e2f;      /* خلفية رئيسية داكنة ومحايدة أكثر */
+    --accent-color: #8e44ad;         /* تدرّج للبنفسجي – تمام */
+    --light-color: #e8daef;          /* أفتح من الحالي لتقليل السطوع شوية */
+    --dark-color: #121820;           /* أغمق وأهدى – جيد للخلفيات */
+    --text-color: #f4eafa;           /* نص فاتح واضح لكن مش أبيض نقي */
+    --text-dark: #b8b8c6;            /* نص ثانوي داكن – رمادي بنفسجي ناعم */
   --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     --transition: all 0.3s ease; 
 }
