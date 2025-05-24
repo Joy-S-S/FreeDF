@@ -3,15 +3,15 @@ html {
 }
 
 :root {
---primary-color: #9b59b6;      /* Royal Purple */
---secondary-color: #2c3e50;    /* Deep Navy */
---accent-color: #8e44ad;       /* Dark Purple */
---light-color: #f5eef8;        /* Soft Lavender White */
---dark-color: #1a252f;         /* Midnight Blue */
---text-color: #f0e4f7;         /* Light Lavender (للنصوص الفاتحة على الخلفيات الداكنة) */
---text-dark: #3a3a4a;          /* Dark Slate Gray (للنصوص الداكنة على الخلفيات الفاتحة) */
---shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
---transition: all 0.3s cubic-bezier(0.25, 0.5, 0.5, 1); /* تأثير حركي أنعم */
+--primary-color: #8a2be2;       /* Purple Medium - بنفسجي قوي */
+    --secondary-color: #1a1a1a;     /* Dark Black - أسود داكن (ثابت) */
+    --accent-color: #4b0082;        /* Indigo - بنفسجي داكن جداً */
+    --light-color: #f8f8f8;         /* Light Gray - فاتح (ثابت) */
+    --dark-color: #2d1a3d;          /* Dark Purple - بنفسجي ليلي */
+    --text-color: #e0e0e0;          /* Light Text - نص فاتح (ثابت) */
+    --text-dark: #333;              /* Dark Text - نص داكن (ثابت) */
+    --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --transition: all 0.3s ease;
 }
 
 * {
