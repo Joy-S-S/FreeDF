@@ -17,8 +17,6 @@ def allowed_file(filename, extensions=['pdf']):
 def index():
     return render_template('index.html')
 
-from io import BytesIO
-
 @app.route('/merge', methods=['POST'])
 def merge_pdfs():
     if 'files' not in request.files:
