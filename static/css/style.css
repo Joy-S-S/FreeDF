@@ -1,17 +1,18 @@
 html {
     scroll-behavior: smooth;
+    overflow-x: hidden;
 }
 
 :root {
---primary-color: #9b59b6;        /* نفس البنفسجي الجميل – مناسب كأيقونات أو أزرار */
-    --secondary-color: #1e1e2f;      /* خلفية رئيسية داكنة ومحايدة أكثر */
-    --accent-color: #8e44ad;         /* تدرّج للبنفسجي – تمام */
-    --light-color: #e8daef;          /* أفتح من الحالي لتقليل السطوع شوية */
-    --dark-color: #121820;           /* أغمق وأهدى – جيد للخلفيات */
-    --text-color: #f4eafa;           /* نص فاتح واضح لكن مش أبيض نقي */
-    --text-dark: #b8b8c6;            /* نص ثانوي داكن – رمادي بنفسجي ناعم */
-  --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    --transition: all 0.3s ease; 
+    --primary-color: #9b59b6;
+    --secondary-color: #1e1e2f;
+    --accent-color: #8e44ad;
+    --light-color: #e8daef;
+    --dark-color: #121820;
+    --text-color: #f4eafa;
+    --text-dark: #b8b8c6;
+    --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --transition: all 0.3s ease;
 }
 
 * {
@@ -25,10 +26,11 @@ body {
     background-color: var(--secondary-color);
     color: var(--text-color);
     line-height: 1.6;
+    overflow-x: hidden;
 }
 
 .container {
-    width: 90%;
+    width: 100%;
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 20px;
@@ -75,6 +77,7 @@ body {
     transition: var(--transition);
     padding: 5px 10px;
     border-radius: 4px;
+    white-space: nowrap;
 }
 
 .nav-link:hover {
@@ -85,12 +88,16 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    position: relative;
 }
 
 .mobile-menu-btn {
     display: none;
     font-size: 1.5rem;
     cursor: pointer;
+    color: var(--text-color);
+    background: none;
+    border: none;
 }
 
 /* Hero Section */
@@ -104,6 +111,7 @@ body {
     text-align: center;
     color: white;
     margin-top: 70px;
+    padding: 0 20px;
 }
 
 .hero h1 {
@@ -120,6 +128,7 @@ body {
     display: flex;
     gap: 20px;
     justify-content: center;
+    flex-wrap: wrap;
 }
 
 /* Tool Sections */
@@ -142,6 +151,7 @@ body {
     padding: 30px;
     border-radius: 8px;
     box-shadow: var(--shadow);
+    overflow: hidden;
 }
 
 .upload-area {
@@ -152,6 +162,8 @@ body {
     cursor: pointer;
     transition: var(--transition);
     position: relative;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .upload-area:hover {
@@ -166,6 +178,7 @@ body {
 
 .upload-area p {
     margin-bottom: 0;
+    word-break: break-word;
 }
 
 .file-input {
@@ -184,6 +197,7 @@ body {
     padding: 20px;
     margin-bottom: 20px;
     border-radius: 4px;
+    overflow: auto;
 }
 
 /* Buttons */
@@ -197,6 +211,7 @@ body {
     cursor: pointer;
     border: none;
     font-size: 1rem;
+    white-space: nowrap;
 }
 
 .btn-primary {
@@ -236,6 +251,7 @@ body {
     border-radius: 4px;
     flex: 1;
     min-width: 200px;
+    box-sizing: border-box;
 }
 
 .option input[type="text"], 
@@ -248,6 +264,8 @@ body {
     background-color: var(--dark-color);
     color: var(--text-color);
     flex: 1;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .page-selector, .insert-options {
@@ -265,6 +283,9 @@ body {
     flex-wrap: wrap;
     gap: 10px;
     margin-bottom: 20px;
+    width: 100%;
+    overflow-x: auto;
+    padding-bottom: 10px;
 }
 
 .page-thumbnail {
@@ -277,6 +298,7 @@ body {
     border-radius: 4px;
     cursor: move;
     position: relative;
+    flex-shrink: 0;
 }
 
 .page-thumbnail::after {
@@ -364,6 +386,7 @@ body {
     color: var(--text-color);
     text-decoration: none;
     transition: var(--transition);
+    word-break: break-word;
 }
 
 .footer-section ul li a:hover {
@@ -414,6 +437,8 @@ body {
     max-width: 500px;
     width: 90%;
     position: relative;
+    max-height: 90vh;
+    overflow-y: auto;
 }
 
 .close-modal {
@@ -424,6 +449,8 @@ body {
     cursor: pointer;
     color: var(--text-color);
     transition: var(--transition);
+    background: none;
+    border: none;
 }
 
 .close-modal:hover {
@@ -446,6 +473,7 @@ body {
     margin-bottom: 20px;
     border-radius: 4px;
     background-color: var(--dark-color);
+    overflow: auto;
 }
 
 .preview-area ul {
@@ -459,6 +487,9 @@ body {
     border-bottom: 1px solid var(--accent-color);
     display: flex;
     justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
 }
 
 .preview-area li:last-child {
@@ -469,10 +500,22 @@ body {
     display: flex;
     align-items: center;
     gap: 10px;
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+}
+
+.file-name {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex: 1;
+    min-width: 0;
 }
 
 .file-icon {
     color: var(--primary-color);
+    flex-shrink: 0;
 }
 
 .file-remove {
@@ -481,6 +524,7 @@ body {
     background: none;
     border: none;
     font-size: 1rem;
+    flex-shrink: 0;
 }
 
 .file-remove:hover {
@@ -517,23 +561,139 @@ body {
     background: var(--primary-color);
 }
 
+/* أنماط جديدة لتحسين عرض الملفات */
+.file-item {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    background-color: var(--accent-color);
+    border-radius: 4px;
+    margin-bottom: 8px;
+    cursor: move;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.file-info {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+}
+
+.page-count {
+    margin-left: auto;
+    padding: 2px 8px;
+    background-color: var(--primary-color);
+    border-radius: 12px;
+    font-size: 0.8rem;
+    color: white;
+    flex-shrink: 0;
+}
+
+.drag-handle {
+    padding: 0 10px;
+    cursor: grab;
+    color: var(--text-color);
+    opacity: 0.5;
+    transition: var(--transition);
+    flex-shrink: 0;
+}
+
+.drag-handle:hover {
+    opacity: 1;
+}
+
+.file-remove {
+    background: none;
+    border: none;
+    color: #ff6b6b;
+    cursor: pointer;
+    padding: 5px;
+    margin-left: 5px;
+    flex-shrink: 0;
+}
+
+.file-remove:hover {
+    color: #ff3b3b;
+}
+
+.sortable-files {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+}
+
+.sortable-ghost {
+    opacity: 0.5;
+    background: var(--primary-color);
+}
+
+.page-thumbnail {
+    width: 100px;
+    height: 140px;
+    background-color: var(--accent-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    cursor: move;
+    position: relative;
+    margin: 5px;
+    transition: transform 0.2s ease;
+    flex-shrink: 0;
+}
+
+.page-thumbnail:hover {
+    transform: scale(1.05);
+}
+
+.page-thumbnail::after {
+    content: attr(data-page-number);
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 2px 5px;
+    border-radius: 3px;
+    font-size: 0.8rem;
+}
+
+.page-thumbnail::before {
+    content: "Original: " attr(data-original-page);
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 2px 5px;
+    border-radius: 3px;
+    font-size: 0.7rem;
+}
+
 /* Responsive Styles */
 @media (max-width: 768px) {
     .nav {
         position: fixed;
         top: 70px;
-        left: -100%;
+        right: -100%;
         width: 80%;
+        max-width: 300px;
         height: calc(100vh - 70px);
         background-color: var(--dark-color);
         flex-direction: column;
         padding: 20px;
         transition: var(--transition);
         z-index: 999;
+        box-shadow: -5px 0 15px rgba(0, 0, 0, 0.3);
+        overflow-y: auto;
     }
 
     .nav.active {
-        left: 0;
+        right: 0;
     }
 
     .nav ul {
@@ -573,6 +733,15 @@ body {
     .option {
         width: 100%;
     }
+    
+    .tool-container {
+        padding: 20px;
+    }
+    
+    .page-thumbnail {
+        width: 80px;
+        height: 112px;
+    }
 }
 
 @media (max-width: 480px) {
@@ -596,152 +765,22 @@ body {
         padding: 10px 20px;
         font-size: 0.9rem;
     }
-}
-
-.file-info {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    flex-wrap: wrap;
-}
-
-.file-icon {
-    color: var(--primary-color);
-    font-size: 1.2rem;
-}
-
-.file-remove {
-    color: #ff6b6b;
-    cursor: pointer;
-    background: none;
-    border: none;
-    font-size: 1rem;
-    margin-left: auto;
-}
-
-.file-remove:hover {
-    color: #ff3b3b;
-}
-
-.preview-area ul {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-    width: 100%;
-}
-
-.preview-area li {
-    padding: 10px;
-    border-bottom: 1px solid var(--accent-color);
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.preview-area li:last-child {
-    border-bottom: none;
-}
-/* أنماط جديدة لتحسين عرض الملفات */
-.file-item {
-    display: flex;
-    align-items: center;
-    padding: 10px;
-    background-color: var(--accent-color);
-    border-radius: 4px;
-    margin-bottom: 8px;
-    cursor: move;
-}
-
-.file-info {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.page-count {
-    margin-left: auto;
-    padding: 2px 8px;
-    background-color: var(--primary-color);
-    border-radius: 12px;
-    font-size: 0.8rem;
-    color: white;
-}
-
-.drag-handle {
-    padding: 0 10px;
-    cursor: grab;
-    color: var(--text-color);
-    opacity: 0.5;
-    transition: var(--transition);
-}
-
-.drag-handle:hover {
-    opacity: 1;
-}
-
-.file-remove {
-    background: none;
-    border: none;
-    color: #ff6b6b;
-    cursor: pointer;
-    padding: 5px;
-    margin-left: 5px;
-}
-
-.file-remove:hover {
-    color: #ff3b3b;
-}
-
-.sortable-files {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    width: 100%;
-}
-
-.sortable-ghost {
-    opacity: 0.5;
-    background: var(--primary-color);
-}
-.page-thumbnail {
-    width: 100px;
-    height: 140px;
-    background-color: var(--accent-color);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 4px;
-    cursor: move;
-    position: relative;
-    margin: 5px;
-    transition: transform 0.2s ease;
-}
-
-.page-thumbnail:hover {
-    transform: scale(1.05);
-}
-
-.page-thumbnail::after {
-    content: attr(data-page-number);
-    position: absolute;
-    bottom: 5px;
-    right: 5px;
-    background-color: rgba(0, 0, 0, 0.7);
-    color: white;
-    padding: 2px 5px;
-    border-radius: 3px;
-    font-size: 0.8rem;
-}
-
-.page-thumbnail::before {
-    content: "Original: " attr(data-original-page);
-    position: absolute;
-    top: 5px;
-    left: 5px;
-    background-color: rgba(0, 0, 0, 0.7);
-    color: white;
-    padding: 2px 5px;
-    border-radius: 3px;
-    font-size: 0.7rem;
+    
+    .upload-area {
+        padding: 20px 15px;
+    }
+    
+    .file-item {
+        flex-wrap: wrap;
+    }
+    
+    .file-name {
+        white-space: normal;
+        word-break: break-all;
+    }
+    
+    .page-thumbnail {
+        width: 70px;
+        height: 98px;
+    }
 }
