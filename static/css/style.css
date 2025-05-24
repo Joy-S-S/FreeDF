@@ -3,7 +3,15 @@ html {
 }
 
 :root {
---primary-color: #9b59b6;      /* Royal Purple */ --secondary-color: #2c3e50;    /* Deep Navy */ --accent-color: #8e44ad;       /* Dark Purple */ --light-color: #f5eef8;        /* Soft Lavender White */ --dark-color: #1a252f;         /* Midnight Blue */ --text-color: #f0e4f7;         /* Light Lavender (للنصوص الفاتحة على الخلفيات الداكنة) */ --text-dark: #3a3a4a;          /* Dark Slate Gray (للنصوص الداكنة على الخلفيات الفاتحة) */ --shadow: 0 4px 6px rgba(0, 0, 0, 0.1); --transition: all 0.3s cubic-bezier(0.25, 0.5, 0.5, 1); /* تأثير حركي أنعم */
+--primary-color: #9b59b6;
+    --secondary-color: #2e2f33;  /* تم التعديل هنا */
+    --accent-color: #8e44ad;
+    --light-color: #e8daef;
+    --dark-color: #121820;
+    --text-color: #f4eafa;
+    --text-dark: #b8b8c6;
+  --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --transition: all 0.3s ease; 
 }
 
 * {
