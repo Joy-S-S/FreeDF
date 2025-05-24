@@ -3,14 +3,14 @@ html {
 }
 
 :root {
---primary-color: #ff4d6d;      /* Bright Coral Red */
---secondary-color: #2b2b2b;    /* Dark Charcoal (lighter than pure black) */
---accent-color: #666666;       /* Medium Gray */
---light-color: #ffffff;        /* Pure White */
---dark-color: #333333;         /* Dark Gray */
---text-color: #f0f0f0;         /* Very Light Gray */
---text-dark: #444444;          /* Darker Gray Text */
---shadow: 0 5px 10px rgba(0, 0, 0, 0.12);
+--primary-color: #3db39e;      /* تركواز هادي ومنعش */
+--secondary-color: #2c3e50;    /* أزرق داكن معتدل */
+--accent-color: #95a5a6;       /* رمادي مائل للأخضر فاتح */
+--light-color: #ecf0f1;        /* رمادي فاتح جداً */
+--dark-color: #34495e;         /* أزرق رمادي غامق */
+--text-color: #2c3e50;         /* نص داكن مريح */
+--text-dark: #1c2833;          /* نص أغمق للقراءة */
+--shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 --transition: all 0.3s ease;
 }
 
