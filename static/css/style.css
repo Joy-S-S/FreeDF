@@ -517,85 +517,73 @@ body {
     background: var(--primary-color);
 }
 
-/* Responsive Styles */
+/* Responsive File Preview Fix */
 @media (max-width: 768px) {
-    .nav {
-        position: fixed;
-        top: 70px;
-        left: -100%;
-        width: 80%;
-        height: calc(100vh - 70px);
-        background-color: var(--dark-color);
-        flex-direction: column;
-        padding: 20px;
-        transition: var(--transition);
-        z-index: 999;
-    }
+  .file-item {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 10px;
+  }
 
-    .nav.active {
-        left: 0;
-    }
+  .file-info {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+    width: 100%;
+  }
 
-    .nav ul {
-        flex-direction: column;
-        gap: 15px;
-    }
+  .file-remove {
+    margin-left: 0;
+    align-self: flex-end;
+  }
 
-    .mobile-menu-btn {
-        display: block;
-    }
+  .page-count {
+    margin-left: 0;
+    align-self: flex-end;
+  }
 
-    .hero h1 {
-        font-size: 2.2rem;
-    }
+  .drag-handle {
+    align-self: flex-start;
+  }
 
-    .hero p {
-        font-size: 1rem;
-    }
-
-    .cta-buttons {
-        flex-direction: column;
-        gap: 15px;
-    }
-
-    .tool-section {
-        padding: 50px 0;
-    }
-
-    .upload-area {
-        padding: 30px 20px;
-    }
-
-    .split-options {
-        flex-direction: column;
-    }
-
-    .option {
-        width: 100%;
-    }
+  .preview-area li {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 }
 
 @media (max-width: 480px) {
-    .logo span {
-        font-size: 1.2rem;
-    }
+  .file-item {
+    padding: 8px;
+  }
 
-    .hero {
-        height: 70vh;
-    }
+  .page-thumbnail {
+    width: 80px;
+    height: 110px;
+  }
 
-    .hero h1 {
-        font-size: 1.8rem;
-    }
+  .page-thumbnail::after,
+  .page-thumbnail::before {
+    font-size: 0.6rem;
+    padding: 1px 4px;
+  }
 
-    .tool-section h2 {
-        font-size: 1.5rem;
-    }
+  .feature h3,
+  .tool-section h2 {
+    font-size: 1.2rem;
+  }
 
-    .btn {
-        padding: 10px 20px;
-        font-size: 0.9rem;
-    }
+  .feature p,
+  .tool-section p {
+    font-size: 0.9rem;
+  }
+}
+
+/* Optional: Force word-break in file names */
+.file-info span,
+.file-info .file-name {
+  word-break: break-word;
+  max-width: 100%;
 }
 
 .file-info {
