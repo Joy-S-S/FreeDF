@@ -3,14 +3,14 @@ html {
 }
 
 :root {
---primary-color: #007acc;      /* Bright Blue */
---secondary-color: #121212;    /* Almost Black */
---accent-color: #444444;       /* Medium Dark Gray */
---light-color: #f5f7fa;        /* Very Light Gray */
---dark-color: #1c1c1c;         /* Dark Gray */
---text-color: #dcdcdc;         /* Light Gray Text */
---text-dark: #2b2b2b;          /* Darker Text */
---shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+--primary-color: #ff4d6d;      /* Bright Coral Red */
+--secondary-color: #2b2b2b;    /* Dark Charcoal (lighter than pure black) */
+--accent-color: #666666;       /* Medium Gray */
+--light-color: #ffffff;        /* Pure White */
+--dark-color: #333333;         /* Dark Gray */
+--text-color: #f0f0f0;         /* Very Light Gray */
+--text-dark: #444444;          /* Darker Gray Text */
+--shadow: 0 5px 10px rgba(0, 0, 0, 0.12);
 --transition: all 0.3s ease;
 }
 
