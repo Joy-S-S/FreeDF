@@ -17,59 +17,39 @@ def allowed_file(filename, extensions=['pdf']):
 def index():
     return render_template('index.html')
 
+from io import BytesIO
+
 @app.route('/merge', methods=['POST'])
 def merge_pdfs():
     if 'files' not in request.files:
-        return jsonify({'error': 'No files uploaded'}), 400
+        return jsonify({"error": "No files uploaded"}), 400
 
     files = request.files.getlist('files')
     if len(files) < 2:
-        return jsonify({'error': 'Please upload at least 2 PDF files'}), 400
+        return jsonify({"error": "Upload at least 2 files"}), 400
 
-    output_pdf = fitz.open()
-    corrupted_files = []
-    temp_files = []
+    output_pdf = fitz.open()  # PyMuPDF
+    output_buffer = BytesIO()  # تخزين النتيجة في الذاكرة
 
     try:
         for file in files:
-            if file and allowed_file(file.filename):
-                filename = secure_filename(file.filename)
-                temp_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-                file.save(temp_path)
-                temp_files.append(temp_path)
+            file_buffer = BytesIO(file.read())  # قراءة الملف في الذاكرة
+            pdf = fitz.open("pdf", file_buffer)
+            output_pdf.insert_pdf(pdf)
+            pdf.close()
 
-                try:
-                    pdf = fitz.open(temp_path)
-                    for page in pdf:
-                        output_pdf.insert_pdf(pdf, from_page=page.number, to_page=page.number)
-                    pdf.close()
-                except Exception as e:
-                    corrupted_files.append(filename)
-            else:
-                cleanup_temp_files(temp_files)
-                return jsonify({'error': 'Invalid file type. Only PDF files are allowed.'}), 400
-
-        if corrupted_files:
-            cleanup_temp_files(temp_files)
-            return jsonify({'error': f'The following files are invalid or corrupted: {", ".join(corrupted_files)}'}), 400
-
-        output = io.BytesIO()
-        output_pdf.save(output)
+        output_pdf.save(output_buffer)
         output_pdf.close()
-        output.seek(0)
-
-        cleanup_temp_files(temp_files)
+        output_buffer.seek(0)
 
         return send_file(
-            output,
+            output_buffer,
+            mimetype='application/pdf',
             as_attachment=True,
-            download_name='merged.pdf',
-            mimetype='application/pdf'
+            download_name='merged.pdf'
         )
-
     except Exception as e:
-        cleanup_temp_files(temp_files)
-        return jsonify({'error': str(e)}), 500
+        return jsonify({"error": str(e)}), 500
 
 @app.route('/split', methods=['POST'])
 def split_pdf():
