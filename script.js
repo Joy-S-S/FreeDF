@@ -423,21 +423,21 @@ document.addEventListener('DOMContentLoaded', function () {
         fileInput.files = dataTransfer.files;
     }
     function updateFileInputOrder(fileInput, filesContainer) {
-    const fileNames = Array.from(filesContainer.querySelectorAll('.file-item'))
-        .map(item => item.dataset.fileName);
+        const fileNames = Array.from(filesContainer.querySelectorAll('.file-item'))
+            .map(item => item.dataset.fileName);
 
-    const files = Array.from(fileInput.files);
-    const newFiles = [];
+        const files = Array.from(fileInput.files);
+        const newFiles = [];
 
-    fileNames.forEach(name => {
-        const file = files.find(f => f.name === name);
-        if (file) newFiles.push(file);
-    });
+        fileNames.forEach(name => {
+            const file = files.find(f => f.name === name);
+            if (file) newFiles.push(file);
+        });
 
-    const dataTransfer = new DataTransfer();
-    newFiles.forEach(file => dataTransfer.items.add(file));
-    fileInput.files = dataTransfer.files;
-}
+        const dataTransfer = new DataTransfer();
+        newFiles.forEach(file => dataTransfer.items.add(file));
+        fileInput.files = dataTransfer.files;
+    }
 
     pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.worker.min.js';
 
@@ -807,6 +807,245 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
+    // Setup compression file upload
+    setupFileUpload('compress-file', 'compress-upload-area', 'compress-preview', false);
+
+    // Add event listener for compression button
+    document.getElementById('compress-btn').addEventListener('click', handleCompress);
+
+    // Image quality slider update
+    document.getElementById('image-quality').addEventListener('input', function () {
+        document.getElementById('quality-value').textContent = this.value + '%';
+    });
+
+    // Compression handler
+    // Compression handler - Improved version
+    async function handleCompress() {
+        const file = document.getElementById('compress-file').files[0];
+        if (!file) {
+            alert('Please select a PDF file to compress.');
+            return;
+        }
+
+        showProcessing(true);
+
+        try {
+            // Get compression settings
+            const compressionLevel = document.getElementById('compression-level').value;
+            const imageQuality = parseInt(document.getElementById('image-quality').value);
+            const removeMetadata = document.getElementById('remove-metadata').checked;
+
+            // Set quality based on compression level
+            let jpegQuality;
+            let scaleFactor;
+
+            switch (compressionLevel) {
+                case 'low':
+                    jpegQuality = Math.max(0.7, imageQuality / 100);
+                    scaleFactor = 1.0;
+                    break;
+                case 'medium':
+                    jpegQuality = Math.max(0.5, imageQuality / 100 * 0.8);
+                    scaleFactor = 0.9;
+                    break;
+                case 'high':
+                    jpegQuality = Math.max(0.3, imageQuality / 100 * 0.6);
+                    scaleFactor = 0.8;
+                    break;
+            }
+
+            console.log(`Compressing with quality: ${jpegQuality}, scale: ${scaleFactor}`);
+
+            // Load PDF using pdf.js for proper rendering
+            const fileBytes = await file.arrayBuffer();
+            const loadingTask = pdfjsLib.getDocument({ data: fileBytes });
+            const pdf = await loadingTask.promise;
+
+            const { PDFDocument } = PDFLib;
+            const newPdfDoc = await PDFDocument.create();
+
+            let totalPages = pdf.numPages;
+            console.log(`Processing ${totalPages} pages...`);
+
+            // Process each page
+            for (let pageNum = 1; pageNum <= totalPages; pageNum++) {
+                try {
+                    // Update processing message
+                    updateProcessingMessage(`Processing page ${pageNum} of ${totalPages}...`);
+
+                    // Get page from original PDF
+                    const page = await pdf.getPage(pageNum);
+                    const viewport = page.getViewport({ scale: 1.0 });
+
+                    // Calculate scaled dimensions for compression
+                    const scaledWidth = Math.floor(viewport.width * scaleFactor);
+                    const scaledHeight = Math.floor(viewport.height * scaleFactor);
+
+                    // Create canvas
+                    const canvas = document.createElement('canvas');
+                    const context = canvas.getContext('2d');
+                    canvas.width = scaledWidth;
+                    canvas.height = scaledHeight;
+
+                    // Set canvas background to white
+                    context.fillStyle = 'white';
+                    context.fillRect(0, 0, canvas.width, canvas.height);
+
+                    // Render page to canvas with scaling
+                    const renderContext = {
+                        canvasContext: context,
+                        viewport: page.getViewport({ scale: scaleFactor }),
+                        background: 'white'
+                    };
+
+                    await page.render(renderContext).promise;
+
+                    // Convert canvas to compressed JPEG with quality setting
+                    let compressedImageData;
+                    try {
+                        compressedImageData = canvas.toDataURL('image/jpeg', jpegQuality);
+                    } catch (e) {
+                        // Fallback to PNG if JPEG fails
+                        compressedImageData = canvas.toDataURL('image/png');
+                    }
+
+                    // Convert data URL to array buffer
+                    const compressedResponse = await fetch(compressedImageData);
+                    const compressedBlob = await compressedResponse.blob();
+                    const compressedArrayBuffer = await compressedBlob.arrayBuffer();
+
+                    // Embed compressed image in new PDF
+                    let compressedImage;
+                    try {
+                        compressedImage = await newPdfDoc.embedJpg(compressedArrayBuffer);
+                    } catch (e) {
+                        // Fallback to PNG embedding
+                        compressedImage = await newPdfDoc.embedPng(compressedArrayBuffer);
+                    }
+
+                    // Add page with original dimensions but compressed content
+                    const newPage = newPdfDoc.addPage([viewport.width, viewport.height]);
+
+                    // Draw compressed image scaled to fit original page size
+                    newPage.drawImage(compressedImage, {
+                        x: 0,
+                        y: 0,
+                        width: viewport.width,
+                        height: viewport.height,
+                    });
+
+                    console.log(`Compressed page ${pageNum}`);
+
+                    // Clean up
+                    page.cleanup();
+
+                } catch (pageError) {
+                    console.error(`Error processing page ${pageNum}:`, pageError);
+                    // Continue with next page even if one fails
+                    continue;
+                }
+            }
+
+            // Remove metadata if requested
+            if (removeMetadata) {
+                newPdfDoc.setTitle('Compressed PDF');
+                newPdfDoc.setAuthor('');
+                newPdfDoc.setSubject('');
+                newPdfDoc.setKeywords([]);
+                newPdfDoc.setProducer('');
+                newPdfDoc.setCreator('');
+                newPdfDoc.setCreationDate(new Date());
+                newPdfDoc.setModificationDate(new Date());
+            }
+
+            // Save with optimized settings
+            const compressedPdfBytes = await newPdfDoc.save({
+                useObjectStreams: true,
+                addDefaultPage: false,
+                objectsPerTick: 100,
+                updateFieldAppearances: false
+            });
+
+            const blob = new Blob([compressedPdfBytes], { type: 'application/pdf' });
+            const url = URL.createObjectURL(blob);
+
+            // Calculate compression ratio
+            const originalSize = file.size;
+            const compressedSize = blob.size;
+            const compressionRatio = compressedSize < originalSize ?
+                ((originalSize - compressedSize) / originalSize * 100).toFixed(1) : 0;
+
+            let message;
+            if (compressedSize < originalSize) {
+                message = `✅ PDF compressed successfully!\n\nSize reduced by ${compressionRatio}%\n${formatFileSize(originalSize)} → ${formatFileSize(compressedSize)}\n\nQuality setting: ${compressionLevel.toUpperCase()}`;
+            } else {
+                message = `📄 PDF processed.\n\nFinal size: ${formatFileSize(compressedSize)}\n\nNote: This PDF may already be optimized or contain minimal compressible content.`;
+            }
+
+            openModal(url, message, `compressed_${file.name}`);
+
+            // Clean up
+            pdf.destroy();
+
+        } catch (error) {
+            console.error('Compression error:', error);
+            alert(`❌ Compression failed:\n${error.message}\n\nPlease try a different PDF file.`);
+        } finally {
+            showProcessing(false);
+        }
+    }
+
+    // Helper function to update processing message
+    function updateProcessingMessage(message) {
+        const processingOverlay = document.getElementById('processing-overlay');
+        if (processingOverlay) {
+            const messageElement = processingOverlay.querySelector('p');
+            if (messageElement) {
+                messageElement.textContent = message;
+            }
+        }
+    }
+
+    // Enhanced processing overlay with progress
+    function showProcessing(show) {
+        const processingOverlay = document.getElementById('processing-overlay');
+
+        if (show) {
+            if (!processingOverlay) {
+                const overlay = document.createElement('div');
+                overlay.id = 'processing-overlay';
+                overlay.style.position = 'fixed';
+                overlay.style.top = '0';
+                overlay.style.left = '0';
+                overlay.style.width = '100%';
+                overlay.style.height = '100%';
+                overlay.style.backgroundColor = 'rgba(0, 0, 0, 0.9)';
+                overlay.style.display = 'flex';
+                overlay.style.flexDirection = 'column';
+                overlay.style.justifyContent = 'center';
+                overlay.style.alignItems = 'center';
+                overlay.style.zIndex = '10000';
+                overlay.style.color = 'white';
+                overlay.style.fontFamily = 'Arial, sans-serif';
+                overlay.innerHTML = `
+                <div style="text-align: center;">
+                    <i class="fas fa-compress-alt fa-spin" style="font-size: 3rem; margin-bottom: 20px; color: var(--primary-color);"></i>
+                    <h2 style="margin-bottom: 10px;">Compressing PDF...</h2>
+                    <p style="margin-bottom: 20px;">This may take a moment for large files</p>
+                    <div style="width: 200px; height: 4px; background: rgba(255,255,255,0.2); border-radius: 2px; overflow: hidden;">
+                        <div id="progress-bar" style="height: 100%; background: var(--primary-color); width: 0%; transition: width 0.3s;"></div>
+                    </div>
+                </div>
+            `;
+                document.body.appendChild(overlay);
+            }
+        } else {
+            if (processingOverlay) {
+                processingOverlay.remove();
+            }
+        }
+    }
+
     function showProcessing(show) {
         const processingOverlay = document.getElementById('processing-overlay');
 
@@ -839,4 +1078,5 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         }
     }
+    
 });
