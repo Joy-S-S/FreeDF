@@ -4,15 +4,21 @@ html {
 }
 
 :root {
-    --primary-color: #9b59b6;
-    --secondary-color: #1e1e2f;
-    --accent-color: #8e44ad;
-    --light-color: #e8daef;
-    --dark-color: #121820;
-    --text-color: #f4eafa;
-    --text-dark: #b8b8c6;
-    --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    /* Modern Vibrant Palette */
+    --primary-color: #6C63FF;       /* Electric Indigo */
+    --secondary-color: #1C1F2A;     /* Deep Charcoal Navy */
+    --accent-color: #2E3655;        /* Subtle Dark Indigo */
+    --light-color: #E6E9F5;         /* Soft Lavender Gray */
+    --dark-color: #12141C;          /* Near Black */
+    --text-color: #F8F9FD;          /* Off-White */
+    --text-dark: #B3B8C6;           /* Muted Gray-Blue */
+    --shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
     --transition: all 0.3s ease;
+
+    /* Accent Variants for Hover & Highlights */
+    --primary-hover: #7C75FF;       
+    --danger-color: #FF5C8D;        
+    --success-color: #00C896;       
 }
 
 * {
@@ -1052,3 +1058,4 @@ body {
     margin: 0;
     font-size: 0.9rem;
 }
+
