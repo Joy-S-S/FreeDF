@@ -1,39 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- 🔍 SEO Title & Description -->
-  <title>FreeDF - Free Online PDF Editor | Merge, Split, Rearrange, Edit PDFs in Browser</title>
-  <meta name="description" content="FreeDF is a free, browser-based PDF editor to merge, split, rearrange, and edit PDF files securely — 100% client-side, no signup or uploads.">
-  <meta name="keywords" content="free pdf editor, online pdf editor, edit pdf, merge pdf, split pdf, rearrange pdf, offline pdf tool, secure pdf editor, javascript pdf editor, open source pdf editor">
-  <meta name="author" content="Yousef Sayed">
-  <meta name="robots" content="index, follow">
+    <!-- 🔍 SEO Title & Description -->
+    <title>FreeDF - Free Online PDF Editor | Merge, Split, Rearrange, Edit PDFs in Browser</title>
+    <meta name="description"
+        content="FreeDF is a free, browser-based PDF editor to merge, split, rearrange, and edit PDF files securely — 100% client-side, no signup or uploads.">
+    <meta name="keywords"
+        content="free pdf editor, online pdf editor, edit pdf, merge pdf, split pdf, rearrange pdf, offline pdf tool, secure pdf editor, javascript pdf editor, open source pdf editor">
+    <meta name="author" content="Yousef Sayed">
+    <meta name="robots" content="index, follow">
 
-  <!-- 🌐 Open Graph (Facebook, LinkedIn, etc.) -->
-  <meta property="og:title" content="FreeDF - Free Online PDF Editor">
-  <meta property="og:description" content="Edit, merge, split, and rearrange PDF files directly in your browser - fast, secure, and privacy-friendly.">
-  <meta property="og:url" content="https://joy-s-s.github.io/FreeDF/">
-  <meta property="og:image" content="https://joy-s-s.github.io/FreeDF/cover.png">
-  <meta property="og:type" content="website">
-  <meta property="og:locale" content="en_US">
-  <meta property="og:site_name" content="FreeDF">
+    <!-- 🌐 Open Graph (Facebook, LinkedIn, etc.) -->
+    <meta property="og:title" content="FreeDF - Free Online PDF Editor">
+    <meta property="og:description"
+        content="Edit, merge, split, and rearrange PDF files directly in your browser - fast, secure, and privacy-friendly.">
+    <meta property="og:url" content="https://joy-s-s.github.io/FreeDF/">
+    <meta property="og:image" content="https://joy-s-s.github.io/FreeDF/cover.png">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:site_name" content="FreeDF">
 
-  <!-- 🐦 Twitter Card -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="FreeDF - Free Online PDF Editor">
-  <meta name="twitter:description" content="FreeDF lets you edit, merge, split, and rearrange PDF files in your browser - free and secure.">
-  <meta name="twitter:image" content="https://joy-s-s.github.io/FreeDF/cover.png">
+    <!-- 🐦 Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="FreeDF - Free Online PDF Editor">
+    <meta name="twitter:description"
+        content="FreeDF lets you edit, merge, split, and rearrange PDF files in your browser - free and secure.">
+    <meta name="twitter:image" content="https://joy-s-s.github.io/FreeDF/cover.png">
 
-  <!-- 🎨 Styles & Icons -->
-  <link rel="icon" href="logo.ico" type="image/x-icon">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  <link rel="stylesheet" href="style.css">
+    <!-- 🎨 Styles & Icons -->
+    <link rel="icon" href="logo.ico" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.14.0/Sortable.min.js"></script>
-  <!-- 📦 JSON-LD Structured Data -->
-  <script type="application/ld+json">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.14.0/Sortable.min.js"></script>
+    <!-- 📦 JSON-LD Structured Data -->
+    <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
@@ -47,7 +52,7 @@
     "license": "https://opensource.org/licenses/MIT"
   }
   </script>
-  <meta name="google-site-verification" content="DKgG5YIMlF_if4cETpmGQBYQBNcC1voI6_jqpPV3afE" />
+    <meta name="google-site-verification" content="DKgG5YIMlF_if4cETpmGQBYQBNcC1voI6_jqpPV3afE" />
 </head>
 
 <body>
@@ -62,6 +67,7 @@
                     <li><a href="#split" class="nav-link">Split</a></li>
                     <li><a href="#remove" class="nav-link">Remove Pages</a></li>
                     <li><a href="#arrange" class="nav-link">Arrange</a></li>
+                    <li><a href="#compress" class="nav-link">Compress</a></li>
                     <li><a href="#images" class="nav-link">Images to PDF</a></li>
                 </ul>
             </nav>
@@ -165,6 +171,49 @@
             </div>
         </section>
 
+        <section id="compress" class="tool-section">
+            <div class="container">
+                <h2><i class="fas fa-compress-alt"></i> Compress PDF</h2>
+                <div class="tool-container">
+                    <div class="upload-area" id="compress-upload-area">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <p>Drag & drop a PDF file here or click to browse</p>
+                        <input type="file" id="compress-file" accept=".pdf" class="file-input">
+                    </div>
+                    <div class="preview-area" id="compress-preview"></div>
+
+                    <!-- Add compression info -->
+                    <div class="compression-info">
+                        <p><i class="fas fa-info-circle"></i> Best results with PDFs containing images. Text-only PDFs
+                            may not compress significantly.</p>
+                    </div>
+
+                    <div class="compression-options">
+                        <div class="option">
+                            <label for="compression-level">Compression Level:</label>
+                            <select id="compression-level">
+                                <option value="low">Low (Better Quality)</option>
+                                <option value="medium" selected>Medium (Balanced)</option>
+                                <option value="high">High (Smaller Size)</option>
+                            </select>
+                        </div>
+                        <div class="option">
+                            <label for="image-quality">Image Quality (10-100):</label>
+                            <input type="range" id="image-quality" min="10" max="100" value="75">
+                            <span id="quality-value">75%</span>
+                        </div>
+                        <div class="option">
+                            <label for="remove-metadata">
+                                <input type="checkbox" id="remove-metadata" checked>
+                                Remove metadata (recommended)
+                            </label>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" id="compress-btn">Compress PDF</button>
+                </div>
+            </div>
+        </section>
+
         <section id="images" class="tool-section">
             <div class="container">
                 <h2><i class="fas fa-images"></i> Images to PDF</h2>
@@ -263,8 +312,10 @@
                     <h3>Connect</h3>
                     <div class="social-links">
                         <a href="https://github.com/Joy-S-S" target="_blank"><i class="fab fa-github"></i></a>
-                        <a href="https://www.linkedin.com/in/yousef-sayed-70456926b/" target="_blank"><i class="fab fa-linkedin"></i></a>
-                        <a href="https://www.facebook.com/profile.php?id=61576319680641" target="_blank"><i class="fab fa-facebook"></i></a>
+                        <a href="https://www.linkedin.com/in/yousef-sayed-70456926b/" target="_blank"><i
+                                class="fab fa-linkedin"></i></a>
+                        <a href="https://www.facebook.com/profile.php?id=61576319680641" target="_blank"><i
+                                class="fab fa-facebook"></i></a>
                         <a href="https://wa.link/4zfqae" target="_blank"><i class="fab fa-whatsapp"></i></a>
                     </div>
                 </div>
@@ -291,12 +342,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js"></script>
-    
+
 </body>
+
 </html>
-
-
-
-
-
-
