@@ -36,10 +36,6 @@ body {
     padding: 0 20px;
 }
 
-@font-face {
-  font-display: swap;
-}
-
 /* Header Styles */
 .header {
     background-color: var(--dark-color);
@@ -984,4 +980,5 @@ body {
         min-width: 100%;
     }
 }
+
 
