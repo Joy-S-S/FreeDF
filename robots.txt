@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://joy-s-s.github.io/FreeDF/sitemap.xml
